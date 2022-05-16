@@ -72,17 +72,20 @@ const posts = [
 ];
 
 // 2. Prendo dall'HTML il container in cui dovrebbero essere contenuti i post
-const postContainer = document.querySelector(".post");
+const container = document.querySelector("#container");
 
 // 3. Con un ciclo for creo tutti i vari post
 for (let i = 0; i < posts.length; i++) {
-    const post = document.querySelector("#post").content.cloneNode(true);
-    post.querySelector(".profile-pic").src = post[i].author.image;
-    post.querySelector(".profile-pic").alt = post[i].author.name;
-    post.querySelector(".post-meta__author").innerHTML = post[i].author.name;
-    post.querySelector(".post-meta__time").innerHTML = post[i].created;
-    post.querySelector(".post__text").innerHTML = post[i].content;
-    post.querySelector(".post__image img").src = post[i].media;
-    post.querySelector(".likes__counter b").innerHTML = post[i].likes;
+    const post = document.querySelector("#tpl-post").content.cloneNode(true);
+    post.querySelector(".profile-pic").src = posts[i].author.image;
+    post.querySelector(".profile-pic").alt = posts[i].author.name;
+    post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
+    post.querySelector(".post-meta__time").innerHTML = posts[i].created;
+    post.querySelector(".post__text").innerHTML = posts[i].content;
+    post.querySelector(".post__image img").src = posts[i].media;
+    post.querySelector(".likes__counter b").innerHTML = posts[i].likes;
     container.append(post);
-}
+};
+
+
+
