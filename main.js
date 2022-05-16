@@ -71,11 +71,15 @@ const posts = [
     }
 ];
 
-// 2. Prendo dall'HTML il container in cui dovrebbero essere contenuti i post
+// 2. Prendo dall'HTML i vari elementi che mi servono
 const container = document.querySelector("#container");
 
 // 3. Con un ciclo for creo tutti i vari post
 for (let i = 0; i < posts.length; i++) {
+    if (posts[i].author.image === null) {
+        posts[i].author.image = "https://via.placeholder.com/300x300?text=LF"
+    }
+
     const post = document.querySelector("#tpl-post").content.cloneNode(true);
     post.querySelector(".profile-pic").src = posts[i].author.image;
     post.querySelector(".profile-pic").alt = posts[i].author.name;
@@ -86,6 +90,30 @@ for (let i = 0; i < posts.length; i++) {
     post.querySelector(".likes__counter b").innerHTML = posts[i].likes;
     container.append(post);
 };
+
+// 4. Creo un evento al click del tasto "Mi piace"
+const allPost = document.querySelectorAll(".post");
+
+for (let i = 0; i < allPost.length; i++) {
+    const likeBtn = allPost[i].querySelector(".like-button");
+    const likesCounter = allPost[i].querySelector(".js-likes-counter");
+    likeBtn.addEventListener("click", 
+        function () {
+            // 4a. SE il bottone contiene la classe like-button--liked
+            //     ALLORA la rimuovo e decremento i mi piace
+            if (likeBtn.classList.contains("like-button--liked")) {
+                likeBtn.classList.remove("like-button--liked");
+                likesCounter.innerHTML = --posts[i].likes;
+
+                // 4b. SE il bottone non contiene la classe like-button--liked
+                //     ALLORA la aggiungo e incremento i mi piace
+            } else {
+                likeBtn.classList.add("like-button--liked");
+                likesCounter.innerHTML = ++posts[i].likes;
+            }
+        }
+    );
+}
 
 
 
