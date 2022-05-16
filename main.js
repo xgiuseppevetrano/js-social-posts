@@ -4,7 +4,7 @@
 // Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like.
 
 // BONUS
-// 1. Formattare le date in formato italiano (gg/mm/aaaa)
+// 1. Formattare le date in formato italiano (gg/mm/aaaa) (ciclo for mettendo post[i].created = ...)
 // 2. Gestire l'assenza dell'immagine profilo con un elemento di fallback che contiene le iniziali dell'utente (es. Luca Formicola > LF).
 // 3. Al click su un pulsante "Mi Piace" di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone.
 
@@ -12,7 +12,7 @@
 /*-----------
     MAIN
 -----------*/
-
+// 1. Creo un array di oggetti in cui ognuno rappresenta un post
 const posts = [
     {
         "id": 1,
@@ -70,3 +70,19 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+// 2. Prendo dall'HTML il container in cui dovrebbero essere contenuti i post
+const postContainer = document.querySelector(".post");
+
+// 3. Con un ciclo for creo tutti i vari post
+for (let i = 0; i < posts.length; i++) {
+    const post = document.querySelector("#post").content.cloneNode(true);
+    post.querySelector(".profile-pic").src = post[i].author.image;
+    post.querySelector(".profile-pic").alt = post[i].author.name;
+    post.querySelector(".post-meta__author").innerHTML = post[i].author.name;
+    post.querySelector(".post-meta__time").innerHTML = post[i].created;
+    post.querySelector(".post__text").innerHTML = post[i].content;
+    post.querySelector(".post__image img").src = post[i].media;
+    post.querySelector(".likes__counter b").innerHTML = post[i].likes;
+    container.append(post);
+}
