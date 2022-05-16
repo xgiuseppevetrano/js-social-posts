@@ -76,11 +76,12 @@ const container = document.querySelector("#container");
 
 // 3. Con un ciclo for creo tutti i vari post
 for (let i = 0; i < posts.length; i++) {
+    const post = document.querySelector("#tpl-post").content.cloneNode(true);
+
     if (posts[i].author.image === null) {
         posts[i].author.image = "https://via.placeholder.com/300x300?text=LF"
     }
 
-    const post = document.querySelector("#tpl-post").content.cloneNode(true);
     post.querySelector(".profile-pic").src = posts[i].author.image;
     post.querySelector(".profile-pic").alt = posts[i].author.name;
     post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
@@ -93,6 +94,8 @@ for (let i = 0; i < posts.length; i++) {
 
 // 4. Creo un evento al click del tasto "Mi piace"
 const allPost = document.querySelectorAll(".post");
+//  4a. Creo un array di oggetti in cui inserirò i post a cui metto mi piace
+const likedPost = [];
 
 for (let i = 0; i < allPost.length; i++) {
     const likeBtn = allPost[i].querySelector(".like-button");
@@ -100,20 +103,21 @@ for (let i = 0; i < allPost.length; i++) {
     likeBtn.addEventListener("click", 
         function () {
             // 4a. SE il bottone contiene la classe like-button--liked
-            //     ALLORA la rimuovo e decremento i mi piace
+            //     ALLORA la rimuovo, decremento i mi piace e rimuovo il post dall'array likedPost
             if (likeBtn.classList.contains("like-button--liked")) {
                 likeBtn.classList.remove("like-button--liked");
                 likesCounter.innerHTML = --posts[i].likes;
+                likedPost.splice(posts[i].id);
+                console.log(likedPost);
 
                 // 4b. SE il bottone non contiene la classe like-button--liked
-                //     ALLORA la aggiungo e incremento i mi piace
+                //     ALLORA la aggiungo, incremento i mi piace e pusho il post dall'array likedPost
             } else {
                 likeBtn.classList.add("like-button--liked");
                 likesCounter.innerHTML = ++posts[i].likes;
+                likedPost.push(posts[i].id);
+                console.log(likedPost);
             }
         }
     );
-}
-
-
-
+};
