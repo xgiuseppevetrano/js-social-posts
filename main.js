@@ -8,6 +8,22 @@
 // 2. Gestire l'assenza dell'immagine profilo con un elemento di fallback che contiene le iniziali dell'utente (es. Luca Formicola > LF).
 // 3. Al click su un pulsante "Mi Piace" di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone.
 
+/*---------------
+    FUNCTION
+---------------*/
+// Funzione per prendere le iniziali del nome e del cognome
+function getInitials(name) {
+    const nameArray = name.split(" ");
+
+    let initials = "";
+    let i = 0;
+    while (i < nameArray.length && i < 2) {
+        initials += nameArray[i][0];
+        i++;
+    }
+
+    return initials;
+}
 
 /*-----------
     MAIN
@@ -79,16 +95,19 @@ for (let i = 0; i < posts.length; i++) {
     const post = document.querySelector("#tpl-post").content.cloneNode(true);
 
     if (posts[i].author.image === null) {
-        posts[i].author.image = "https://via.placeholder.com/300x300?text=LF"
+        // posts[i].author.image = "https://via.placeholder.com/300x300?text=LF"
+        post.querySelector(".post-meta__icon").innerHTML = `<div class="profile-pic-default"><span>${getInitials(posts[i].author.name)}</span></div>`;
+    } else {
+        post.querySelector(".profile-pic").src = posts[i].author.image;
+        post.querySelector(".profile-pic").alt = posts[i].author.name;
     }
 
-    post.querySelector(".profile-pic").src = posts[i].author.image;
-    post.querySelector(".profile-pic").alt = posts[i].author.name;
     post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
     post.querySelector(".post-meta__time").innerHTML = posts[i].created.split("-").reverse().join("/");
     post.querySelector(".post__text").innerHTML = posts[i].content;
     post.querySelector(".post__image img").src = posts[i].media;
-    post.querySelector(".likes__counter b").innerHTML = posts[i].likes;
+    post.querySelector(".js-like-button").dataset.postid = posts[i].id;
+    post.querySelector(".js-likes-counter").innerHTML = posts[i].likes;
     container.append(post);
 };
 
